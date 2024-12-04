@@ -36,7 +36,7 @@ export function Sidebar({ children, toggletheme, theme, className }) {
               expanded ? "w-52 ml-3" : "w-0"
             }`}
           >
-            beev
+            beevent
           </span>
         </div>
 
