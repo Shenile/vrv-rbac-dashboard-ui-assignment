@@ -98,11 +98,10 @@ To run the project locally, follow these steps:
 - ![image](https://github.com/user-attachments/assets/74b86115-e25b-4917-abef-f94339ecb490)
 - ![image](https://github.com/user-attachments/assets/0d42b31b-4b70-43b9-940f-bcc32f0e18c8)
 
+## **Mobile UI**
 
-- Mobile UI
-- ![image](https://github.com/user-attachments/assets/4481b189-48ca-4387-acc9-9b7af5c5918e)
-- ![image](https://github.com/user-attachments/assets/5e7d8d51-0825-4d93-9d62-a8ad815b4605)
-
+- <img src="https://github.com/user-attachments/assets/4481b189-48ca-4387-acc9-9b7af5c5918e" width="200" />
+- <img src="https://github.com/user-attachments/assets/5e7d8d51-0825-4d93-9d62-a8ad815b4605" width="200" />
 
 
 
