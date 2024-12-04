@@ -214,6 +214,7 @@ export const UsersPage = () => {
         <div className="flex flex-col gap-2">
           <h1 className="text-lg font-semibold tracking-wide mb-4 dark:text-gray-100">Users Management</h1>
         </div>
+        
 
         <CustomButton
           onClick={openModal}

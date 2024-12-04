@@ -1,10 +1,11 @@
 import React, { useState, createContext, useContext } from "react";
 import {
   Menu,
-  MoreVertical,
   MoonStarIcon,
   Sun,
   ArrowRightLeft,
+  ChevronLast,
+  ChevronFirst,
 } from "lucide-react";
 import { useRBAC } from "../context/RBACcontext";
 import CustomButton from "./CustomButton";
@@ -26,13 +27,23 @@ export function Sidebar({ children, toggletheme, theme, className }) {
         <div className="p-4 pb-2 flex items-center ">
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className="flex items-center p-1.5 rounded-lg hover:bg-gray-300 dark:hover:bg-surface-a0"
+            className="p-2 rounded-lg  hover:bg-gray-300 dark:hover:bg-surface-a0"
           >
-            <Menu size={20} className="text-gray-600 dark:text-gray-300" />
+            {expanded ? (
+              <ChevronFirst
+                size={20}
+                className="text-gray-600 dark:text-gray-300"
+              />
+            ) : (
+              <ChevronLast
+                size={20}
+                className="text-gray-600 dark:text-gray-300"
+              />
+            )}
           </button>
 
           <span
-            className={`font-bold tracking-wide text-lg text-gray-600 dark:text-gray-300 overflow-hidden transition-all ${
+            className={`pb-1 font-bold tracking-wide text-xl text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 overflow-hidden transition-all ${
               expanded ? "w-52 ml-3" : "w-0"
             }`}
           >

@@ -247,7 +247,6 @@ function ManageMode({ roles, rules, fetchRoles }) {
       {/* Create Role Modal */}
       {createMode && (
         <div>
-          <h3 className="text-xl font-bold mb-4">Create New Role</h3>
           <RoleForm
             mode="create"
             onCancel={() => setCreateMode(false)}

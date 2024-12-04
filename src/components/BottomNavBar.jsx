@@ -13,7 +13,7 @@ const BottomNavBar = ({ activeItem, onItemClick }) => {
   ];
 
   return (
-    <div className="fixed bottom-2 left-0 w-full px-2">
+    <div className="fixed bottom-4 left-0 w-full px-2">
       <div className="rounded-full left-0 w-full bg-white shadow-lg border border-gray-300
        dark:bg-surface-a0 dark:border-t dark:border-surface-a10 text-white flex justify-around p-4">
         {items.map((item) => (
