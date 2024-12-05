@@ -95,7 +95,8 @@ export const RBACProvider = ({ children }) => {
     fetchRoles,
     fetchRules, 
     isloading, 
-    setLoading
+    setLoading,
+    fetchUserDetails
   };
   return <RBACContext.Provider value={value}>{children}</RBACContext.Provider>;
 };

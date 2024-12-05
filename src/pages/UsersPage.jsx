@@ -211,20 +211,20 @@ export const UsersPage = () => {
       )}
 
       <td className="pl-2 md:pl-0 border-b dark:border-surface-a90 py-4">
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center mr-4">
           <CustomButton
             label={"Edit"}
             onClick={() => handleEditUser(user.id)}
             defaultStyles={false}
             className={
-              "text-custom-btn-light dark:text-custom-btn-dark hover:underline"
+              `text-custom-btn-light dark:text-custom-btn-dark hover:underline`
             }
           />
           <CustomButton
             label={"Delete"}
             onClick={() => handleDelete(user.id)}
             defaultStyles={false}
-            className={"text-red-500 dark:text-red-700"}
+            className={" md:text-md text-red-500 dark:text-red-700"}
           />
         </div>
       </td>
@@ -232,13 +232,13 @@ export const UsersPage = () => {
   );
 
   return (
-    <div className="border border-gray-300 rounded-lg dark:border-surface-a10 md:border-0 pt-4 md:p-0">
+    <div className="border border-gray-300 rounded-lg dark:border-surface-a10  md:border-0 pt-4 md:p-0">
       <div className="flex flex-col md:flex-row md:justify-between">
         <div className="pl-4 md:pl-0 flex flex-col">
           <h1 className="text-lg font-semibold dark:text-gray-100">
             Users Management
           </h1>
-          <p className="xs:py-2 md:py-0 mb-2 xs:text-gray-700">
+          <p className="xs:py-2 md:py-0 mb-2 text-gray-700 dark:text-gray-400">
             list of users including their names, email, role, status
           </p>
         </div>
@@ -256,8 +256,8 @@ export const UsersPage = () => {
 
       {/* Modal for Add/Edit User */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 dark:bg-surface-a10 dark:bg-opacity-25 dark:backdrop-blur-sm flex items-center justify-center z-45">
-          <div className="p-12 bg-white dark:bg-surface-a0 rounded-lg w-3/4 md:w-1/2 lg:w-1/3 shadow-lg">
+        <div className="fixed inset-0 bottom-6 md:bottom-0 bg-gray-500 bg-opacity-50 dark:bg-surface-a10 dark:bg-opacity-25 dark:backdrop-blur-sm flex items-center justify-center z-45">
+          <div className="p-4 md:p-12 bg-white dark:bg-surface-a0 rounded-lg w-3/4 md:w-1/2 lg:w-1/3 shadow-lg">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -265,34 +265,34 @@ export const UsersPage = () => {
               }}
               className="flex flex-col gap-4"
             >
-              <p className="text-gray-700 dark:text-gray-100">Name</p>
+              <p className="text-sm md:text-md text-gray-700 dark:text-gray-100">Name</p>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Name"
-                className="border dark:border-0 dark:text-gray-100 dark:bg-surface-a10 p-2 rounded-md"
+                className="text-sm md:text-md border dark:border-0 dark:text-gray-100 dark:bg-surface-a10 p-2 rounded-md"
                 required
               />
 
-              <p className="text-gray-700 dark:text-gray-100">Email</p>
+              <p className="text-sm md:text-md text-gray-700 dark:text-gray-100">Email</p>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Email"
-                className="border dark:border-0 dark:text-gray-100 dark:bg-surface-a10 p-2 rounded-md"
+                className="text-sm md:text-md border dark:border-0 dark:text-gray-100 dark:bg-surface-a10 p-2 rounded-md"
                 required
               />
 
-              <p className="text-gray-700 dark:text-gray-100">Role</p>
+              <p className="text-sm md:text-md text-gray-700 dark:text-gray-100">Role</p>
               <select
                 name="role_id"
                 value={formData.role_id}
                 onChange={handleRoleChange}
-                className="border dark:border-0 dark:text-gray-100 dark:bg-surface-a10 p-2 rounded-md "
+                className="text-sm md:text-md border dark:border-0 dark:text-gray-100 dark:bg-surface-a10 p-2 rounded-md "
                 required
               >
                 <option value="">Select Role</option>
@@ -303,27 +303,28 @@ export const UsersPage = () => {
                 ))}
               </select>
 
-              <p className="text-gray-700 dark:text-gray-100">Status</p>
+              <p className="text-sm md:text-md text-gray-700 dark:text-gray-100">Status</p>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="border dark:border-0 dark:text-gray-100 dark:border-gray-600 p-2 rounded-md dark:bg-surface-a10"
+                className="text-sm md:text-md border dark:border-0 dark:text-gray-100 dark:border-gray-600 p-2 rounded-md dark:bg-surface-a10"
               >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>
 
-              <div className="flex gap-4 mt-4">
-                <CustomButton
-                  label={isEditing ? "Save" : "Add User"}
-                  type="submit"
-                  className="bg-custom-btn-light dark:bg-custom-btn-dark dark:hover:bg-custom-btn-hover-dark text-white"
-                />
+              <div className="flex gap-4 mt-4 justify-end">
+                
                 <CustomButton
                   label="Discard"
                   onClick={closeModal}
-                  className="bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-500 text-white"
+                  className="text-sm md:text-md bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-500 text-white"
+                />
+                <CustomButton
+                  label={isEditing ? "Save" : "Add User"}
+                  type="submit"
+                  className="text-sm md:text-md px-2 py-1 md:px-3 md:py-2 bg-custom-btn-light dark:bg-custom-btn-dark dark:hover:bg-custom-btn-hover-dark text-white"
                 />
               </div>
             </form>

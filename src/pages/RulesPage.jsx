@@ -79,12 +79,12 @@ function RulesPage() {
   }
 
   return (
-    <div className='xs:p-4 lg:px-20 h-screen '>
-      <h1 className="text-lg tracking-wide font-semibold text-gray-900 dark:text-gray-100">
+    <div className='xs:p-4 lg:px-20 md:h-screen'>
+      <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
         Rules Management
       </h1>
 
-      <div className="mt-6 pr-8 md:h-[550px] md:overflow-y-scroll scrollbar scrollbar-thin dark:scrollbar-thumb-surface-a0 dark:scrollbar-track-surface-a10">
+      <div className="mt-6 md:pr-8 md:h-[550px] md:overflow-y-scroll scrollbar scrollbar-thin dark:scrollbar-thumb-surface-a0 dark:scrollbar-track-surface-a10">
         {Object.entries(groupedRules).map(([context, contextRules]) => (
           <div key={context} className="mb-8 ">
             <h2 className="flex gap-2 items-center font-semibold text-gray-700 
@@ -103,13 +103,13 @@ function RulesPage() {
                   </div>
                   <div className="mt-2 sm:mt-0">
                     <button
-                      className="text-highlight hover:underline px-2"
+                      className="text-sm md:text-md text-highlight hover:underline pr-2 md:px-2"
                       onClick={() => handleOpenModal(context, rule)}
                     >
                       Edit
                     </button>
                     <button
-                      className="text-red-500 hover:underline px-2"
+                      className="text-sm md:text-md text-red-500 hover:underline pr-2 md:px-2"
                       onClick={() => handleDelete(rule.id)}
                     >
                       Delete

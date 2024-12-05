@@ -16,12 +16,13 @@ const CustomButton = ({
       type={type}
       onClick={onClick}
       className={`
+        ${className}
         ${defaultStyles ? `flex items-center justify-center 
         h-fit w-fit px-3 py-2 
-        font-semibold text-white 
+        font-semibold text-gray-100
         bg-custom-btn-light hover:bg-custom-btn-hover-light 
         dark:btn-custom-btn-dark dark:custom-btn-hover-dark rounded-lg` : ""} 
-        ${className} ${
+         ${
         disabled ? "opacity-50 cursor-not-allowed" : ""
       }`}
       disabled={disabled}

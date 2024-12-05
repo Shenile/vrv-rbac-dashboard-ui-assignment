@@ -14,6 +14,7 @@ import RulesPage from "./pages/RulesPage";
 import ProtectedRoute from "./ProtectedRoute";
 import { useMediaQuery } from "react-responsive"; // For media query hooks
 import Loading from "./components/Loading";
+import DemoPage from "./components/DemoPage";
 
 function App() {
   const [activeItem, setActiveItem] = useState("");
@@ -155,7 +156,7 @@ const getPageComponent = (route) => {
     case "/settings":
       return SettingsPage;
     default:
-      return () => <div>Page Not Found</div>;
+      return () => <LandingPage/>;
   }
 };
 

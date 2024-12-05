@@ -3,21 +3,22 @@ import { UsersRound, TicketX, Shield, Key, Wrench } from "lucide-react";
 import { useRBAC } from "../context/RBACcontext";
 import { createRole, updateRole, deleteRole } from "../services/api";
 import CustomButton from "../components/CustomButton";
-
+import ButtonLoading from "../components/ButtonLoading";
 
 function RoleForm({
-  mode = "create", 
-  initialData = {}, 
-  rules, 
-  fetchRoles, 
-  onCancel, 
+  mode = "create",
+  initialData = {},
+  rules,
+  onCancel,
+  setCreateMode,
 }) {
   const [roleName, setRoleName] = useState(initialData.role_name || "");
   const [description, setDescription] = useState(initialData.description || "");
   const [selectedPermissions, setSelectedPermissions] = useState(
     initialData.permissions || []
   );
-
+  const [loading, setLoading] = useState(false);
+  const {fetchRoles, fetchUserDetails, currentUser} = useRBAC();
 
   const groupedPermissions = rules.reduce((acc, rule) => {
     acc[rule.context] = acc[rule.context] || [];
@@ -42,20 +43,28 @@ function RoleForm({
       description: description,
       permissions: selectedPermissions,
     };
-
+    setLoading(true);
     try {
       if (mode === "create") {
         await createRole(payload);
+        setCreateMode(false);
       }
 
       if (mode === "edit") {
         await updateRole(initialData.id, payload);
+        if (initialData.id === currentUser.id){
+          fetchUserDetails(initialData.id);
+        }
+        
+        onCancel();
       }
 
       fetchRoles();
+
     } catch (err) {
       alert(`An error occurred: ${err.message}`);
     }
+    setLoading(false);
   };
 
   const getContextIcon = (context) => {
@@ -74,10 +83,14 @@ function RoleForm({
   };
 
   return (
-    <div className="w-full xs:p-4 md:p-8 bg-white border dark:bg-surface-a0 dark:border-0 rounded-xl shadow-md mx-auto xs:px-4 md:px-20 lg:px-48">
+    <div
+      className="w-full py-2 md:py-8 md:px-20 lg:px-48 bg-white 
+                border dark:bg-surface-a0 dark:border-surface-a10  
+                rounded-xl shadow-md mx-auto "
+    >
       <form onSubmit={handleSubmit}>
         {/* Role Name */}
-        <div className="mb-12">
+        <div className="mb-8 mx-4 md:mx-0 md:mb-12">
           <label
             className="block font-semibold text-gray-900 dark:text-white"
             htmlFor="roleName"
@@ -96,7 +109,7 @@ function RoleForm({
         </div>
 
         {/* Description */}
-        <div className="mb-12">
+        <div className="mb-8 mx-4 md:mx-0 mb-12">
           <label
             className="block font-semibold text-gray-900 dark:text-white"
             htmlFor="description"
@@ -115,17 +128,17 @@ function RoleForm({
 
         {/* Permissions */}
         <div className="mb-4">
-          <label className="block font-semibold text-gray-900 dark:text-white mb-4">
+          <label className="mx-4 md:mx-0 block font-semibold text-gray-900 dark:text-white mb-4">
             Permissions/Rules
           </label>
           {Object.entries(groupedPermissions).map(
             ([context, permissionsList]) => (
               <div key={context} className="mb-6">
-                <h2 className="flex items-center gap-2 py-2 my-2 border-t border-b border-gray-300 dark:border-surface-a10 text-md font-semibold text-gray-800 dark:text-white capitalize mb-2">
+                <h2 className="xs:px-4 md:px-0 flex items-center gap-2 py-2 my-2 border-t border-b border-gray-300 dark:border-surface-a10 text-md font-semibold text-gray-800 dark:text-white capitalize mb-2">
                   {getContextIcon(context)}
                   {context} Management
                 </h2>
-                <div className="space-y-2">
+                <div className="space-y-2 mx-4 md:mx-0">
                   {permissionsList.map((rule) => (
                     <div key={rule.id} className="flex items-center">
                       <input
@@ -133,7 +146,7 @@ function RoleForm({
                         id={`permission-${rule.id}`}
                         checked={selectedPermissions.includes(rule.id)}
                         onChange={() => handlePermissionChange(rule.id)}
-                        className="mr-2 rounded"
+                        className="mr-2 rounded "
                       />
                       <label
                         htmlFor={`permission-${rule.id}`}
@@ -150,15 +163,27 @@ function RoleForm({
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-end gap-8 mt-12">
-          <CustomButton
-            label="Cancel"
+        <div className="flex justify-end gap-4 md:gap-8 mt-6 md:mt-12 mr-2 md:mr-0">
+          <button
             onClick={onCancel}
-            className="bg-gray-300 dark:bg-surface-a10 text-white text-sm px-2 py-1 md:text-md md:px-3 md:py-2 rounded-md font-semibold"
-          />
+            className="text-gray-700 dark:text-gray-100 
+            bg-gray-300 dark:bg-surface-a10
+            hover:bg-gray-400 dark:hover:bg-gray-700
+
+            xs:text-sm md:text-md 
+            px-2 py-1 md:text-md md:px-3 md:py-2 rounded-md font-semibold"
+          >Cancel</button>
           <CustomButton
             type="submit"
-            label={mode === "create" ? "Create Role" : "Update Role"}
+            label={
+              loading ? (
+                <ButtonLoading />
+              ) : mode === "create" ? (
+                "Create Role"
+              ) : (
+                "Update Role"
+              )
+            }
             onClick={handleSubmit}
             className="bg-highlight text-white text-sm px-2 py-1 md:text-md md:px-3 md:py-2 rounded-md font-semibold"
           />
@@ -177,13 +202,13 @@ function ManageMode({ roles, rules, fetchRoles }) {
     try {
       await deleteRole(roleId);
       alert("Role deleted successfully!");
-      fetchRoles(); 
+      fetchRoles();
     } catch (error) {
       alert(`Error deleting role: ${error.message}`);
     }
   };
   return (
-    <div className="">
+    <div className="rounded-lg mb-2">
       {!createMode && !selectedRole && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Existing Roles */}
@@ -234,7 +259,7 @@ function ManageMode({ roles, rules, fetchRoles }) {
       )}
 
       {/* Edit Role Modal */}
-      {selectedRole && (
+      {selectedRole && editMode && (
         <RoleForm
           mode="edit"
           initialData={selectedRole}
@@ -249,7 +274,7 @@ function ManageMode({ roles, rules, fetchRoles }) {
         <div>
           <RoleForm
             mode="create"
-            onCancel={() => setCreateMode(false)}
+            setCreateMode={setCreateMode}
             rules={rules}
             fetchRoles={fetchRoles}
           />
@@ -263,8 +288,11 @@ function RolesPage() {
   const { rules, fetchRoles, roles } = useRBAC(); // Fetching the rules/permissions
 
   return (
-    <div className="xs:p-4 md:p-0 overflow-y-scroll scrollbar scrollbar-thin dark:scrollbar-thumb-surface-a10 dark:scrollbar-track-surface-a0 md:h-screen lg:h-[625px]">
-      <h1 className="text-lg dark:text-gray-100  font-semibold mb-4">
+    <div
+      className="
+      md:mt-8 xs:p-4 md:p-0 overflow-y-scroll scrollbar scrollbar-thin dark:scrollbar-thumb-surface-a10 dark:scrollbar-track-surface-a0 h-full"
+    >
+      <h1 className="md:fixed md:top-8 text-lg dark:text-gray-100 font-semibold mb-4">
         Roles Management
       </h1>
       <ManageMode roles={roles} rules={rules} fetchRoles={fetchRoles} />
