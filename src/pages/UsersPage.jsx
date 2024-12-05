@@ -210,8 +210,8 @@ export const UsersPage = () => {
         </td>
       )}
 
-      <td className="pl-2 md:pl-0 border-b dark:border-surface-a90 py-4">
-        <div className="flex gap-4 items-center mr-4">
+      <td className="pr-3 border-b dark:border-surface-a90 py-4">
+        <div className="flex gap-4 items-center">
           <CustomButton
             label={"Edit"}
             onClick={() => handleEditUser(user.id)}
