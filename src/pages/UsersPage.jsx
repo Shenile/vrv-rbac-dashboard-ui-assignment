@@ -15,10 +15,11 @@ export const UsersPage = () => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-  const { roles, setLoading } = useRBAC();
+  const { roles, setLoading, currentUserRules } = useRBAC();
 
   // Media Queries
-  const isMobile = useMediaQuery({ minWidth: 360, maxWidth: 767 });
+  const isMobile = useMediaQuery({ minWidth: 360, maxWidth: 550 });
+  const isMidScreen = useMediaQuery({ minWidth: 551, maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
@@ -32,19 +33,20 @@ export const UsersPage = () => {
   ]);
 
   useEffect(() => {
-   
     fetchUsers();
   }, []);
 
   useEffect(() => {
     if (isMobile) {
-      setHeaders(["User", "Actions"]);
+      setHeaders(["User"]);
+    } else if (isMidScreen) {
+      setHeaders(["User", "Role"]);
     } else if (isTablet) {
-      setHeaders(["User", "Role", "Status", "Actions"]);
+      setHeaders(["User", "Role", "Status"]);
     } else if (isDesktop) {
-      setHeaders(["Name", "Email", "Role", "Status", "Actions"]);
+      setHeaders(["Name", "Email", "Role", "Status"]);
     }
-  }, [isMobile, isTablet, isDesktop]);
+  }, [isMobile, isTablet, isDesktop, isMidScreen]);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -77,7 +79,7 @@ export const UsersPage = () => {
   };
 
   const handleSaveUser = async () => {
-    try{
+    try {
       setLoading(true);
       const updatedUser = await updateUser(formData);
       setLoading(false);
@@ -85,11 +87,10 @@ export const UsersPage = () => {
         prev.map((user) => (user.id === formData.id ? updatedUser : user))
       );
       closeModal();
-    }catch (err){
+    } catch (err) {
       setLoading(false);
       alert("ERROR : ", err);
     }
-    
   };
 
   const handleDelete = async (userId) => {
@@ -124,10 +125,11 @@ export const UsersPage = () => {
     setFormData({ ...formData, role_id: e.target.value });
   };
 
+  
   const renderRow = (user) => (
-    <tr key={user.id} className="text-gray-800 dark:text-gray-400">
+    <tr key={user.id} className="border-b dark:border-surface-a90 text-gray-800 dark:text-gray-400">
       {headers.includes("User") && isTablet && (
-        <td className="font-normal tracking-wide border-b dark:border-surface-a90 py-4">
+        <td className="py-4">
           <div>
             <p>{user.name}</p>
             <p>{user.email}</p>
@@ -135,39 +137,61 @@ export const UsersPage = () => {
         </td>
       )}
 
+      {headers.includes("User") && isMidScreen && (
+        <td className="border-b dark:border-surface-a90 py-4 pl-4">
+          <div>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+            <p
+              className={`w-fit mt-1 px-2 py-1 font-sm text-sm border rounded-lg ${
+                user.status == "Active"
+                  ? "text-green-500 dark:text-green-600 border-green-500 dark:border-green-600"
+                  : "text-red-500 dark:text-red-600 border-red-500 dark:border-red-600"
+              }`}
+            >
+              {user.status}
+            </p>
+          </div>
+        </td>
+      )}
+
       {headers.includes("User") && isMobile && (
-        <td className=" border-b dark:border-surface-a90 py-4">
+        <td className=" border-b dark:border-surface-a90 py-4 pl-4">
           <div className="flex flex-col gap-1 justify-center">
             <p className="font-sm">{user.name}</p>
             <p className="font-sm">{user.email}</p>
-            <p className="font-sm">{user.role || "Not Assigned"}</p>
-            <p className={`w-fit mt-1 px-2 py-1 font-sm text-sm border rounded-lg ${
-            user.status == "Active"
-              ? "text-green-500 dark:text-green-600 border-green-500 dark:border-green-600"
-              : "text-red-500 dark:text-red-600 border-red-500 dark:border-red-600"
-          }`}>{user.status}</p>
+            <p className="font-sm">{user.role || "not assigned"}</p>
+            <p
+              className={`w-fit mt-1 px-2 py-1 font-sm text-sm border rounded-lg ${
+                user.status == "Active"
+                  ? "text-green-500 dark:text-green-600 border-green-500 dark:border-green-600"
+                  : "text-red-500 dark:text-red-600 border-red-500 dark:border-red-600"
+              }`}
+            >
+              {user.status}
+            </p>
           </div>
         </td>
       )}
 
       {headers.includes("Name") && (
-        <td className="font-normal tracking-wide border-b dark:border-surface-a90 py-4">
+        <td className="border-b dark:border-surface-a90 py-4">
           {user.name}
         </td>
       )}
       {headers.includes("Email") && (
-        <td className="font-normal tracking-wide border-b dark:border-surface-a90 py-4">
+        <td className="border-b dark:border-surface-a90 py-4">
           {user.email}
         </td>
       )}
       {headers.includes("Role") && (
-        <td className="font-normal tracking-wide border-b dark:border-surface-a90 py-4">
-          {user.role || "Not assigned"}
+        <td className="pl-4 md:pl-0 border-b dark:border-surface-a90 py-4">
+          {user.role || "not assigned"}
         </td>
       )}
       {headers.includes("Status") && (
         <td
-          className={`font-normal tracking-wide border-b dark:border-surface-a90 py-4 
+          className={`border-b dark:border-surface-a90 py-4 
           ${
             user.status == "Active"
               ? "text-sm text-green-500 dark:text-green-600"
@@ -185,42 +209,45 @@ export const UsersPage = () => {
           </p>
         </td>
       )}
-      {headers.includes("Actions") && (
-        <td className="border-b dark:border-surface-a90 py-4">
-          <div className="flex gap-4 items-center">
-            <CustomButton
-              label={"Edit"}
-              onClick={() => handleEditUser(user.id)}
-              defaultStyles={false}
-              className={
-                "text-custom-btn-light dark:text-custom-btn-dark hover:underline"
-              }
-            />
-            <CustomButton
-              label={"Delete"}
-              onClick={() => handleDelete(user.id)}
-              defaultStyles={false}
-              className={"text-red-500 dark:text-red-700"}
-            />
-          </div>
-        </td>
-      )}
+
+      <td className="pl-2 md:pl-0 border-b dark:border-surface-a90 py-4">
+        <div className="flex gap-4 items-center">
+          <CustomButton
+            label={"Edit"}
+            onClick={() => handleEditUser(user.id)}
+            defaultStyles={false}
+            className={
+              "text-custom-btn-light dark:text-custom-btn-dark hover:underline"
+            }
+          />
+          <CustomButton
+            label={"Delete"}
+            onClick={() => handleDelete(user.id)}
+            defaultStyles={false}
+            className={"text-red-500 dark:text-red-700"}
+          />
+        </div>
+      </td>
     </tr>
   );
 
   return (
-    <div className="xs:px-4 xs:py-2 md:p-0">
-      <div className="flex justify-between">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-lg font-semibold tracking-wide mb-4 dark:text-gray-100">Users Management</h1>
+    <div className="border border-gray-300 rounded-lg dark:border-surface-a10 md:border-0 pt-4 md:p-0">
+      <div className="flex flex-col md:flex-row md:justify-between">
+        <div className="pl-4 md:pl-0 flex flex-col">
+          <h1 className="text-lg font-semibold dark:text-gray-100">
+            Users Management
+          </h1>
+          <p className="xs:py-2 md:py-0 mb-2 xs:text-gray-700">
+            list of users including their names, email, role, status
+          </p>
         </div>
-        
 
         <CustomButton
           onClick={openModal}
           defaultStyles={false}
           label={"Add User"}
-          className={`text-sm md:text-md px-2 py-1 h-fit w-fit md:px-3 md:py-2
+          className={`ml-4 md:ml-0 md:text-md px-2 py-1 h-fit w-fit md:px-3 md:py-2
             font-semibold text-white bg-custom-btn-light 
             hover:bg-custom-btn-hover-light dark:btn-custom-btn-dark 
             dark:custom-btn-hover-dark rounded-lg`}
@@ -305,15 +332,17 @@ export const UsersPage = () => {
       )}
 
       {/* Users Table with Scrolling */}
-      <div className="md:h-[575px] md:overflow-y-scroll scrollbar-thin 
-      dark:scrollbar-thumb-surface-a10 dark:scrollbar-track-surface-a0 mt-4">
-        <table className="w-full table-auto border-separate">
+      <div
+        className="md:h-[575px] md:overflow-y-scroll scrollbar-thin 
+      dark:scrollbar-thumb-surface-a10 dark:scrollbar-track-surface-a0 mt-4"
+      >
+        <table className="w-full table-auto">
           <thead>
-            <tr className="">
+            <tr className="border-b border-gray-300 dark:border-surface-a10">
               {headers.map((header, index) => (
                 <th
                   key={index}
-                  className="text-left py-2 pb-4 font-semibold text-gray-700 dark:text-gray-100 border-b border-gray-300 dark:border-surface-a10"
+                  className="text-left xs:pl-4 md:pl-0 py-2 pb-4 font-semibold dark:text-gray-100 "
                 >
                   {header}
                 </th>

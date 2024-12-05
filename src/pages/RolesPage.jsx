@@ -193,7 +193,7 @@ function ManageMode({ roles, rules, fetchRoles }) {
               className="flex flex-col gap-4 bg-white dark:bg-surface-a0 shadow-md rounded-lg p-4 
             border border-gray-200 dark:border-surface-a10 dark:text-white"
             >
-              <h3 className=" font-semibold text-gray-900 dark:text-gray-100 tracking-wide">
+              <h3 className=" font-semibold text-gray-900 dark:text-gray-100">
                 {role.role_name}
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
@@ -264,7 +264,7 @@ function RolesPage() {
 
   return (
     <div className="xs:p-4 md:p-0 overflow-y-scroll scrollbar scrollbar-thin dark:scrollbar-thumb-surface-a10 dark:scrollbar-track-surface-a0 md:h-screen lg:h-[625px]">
-      <h1 className="text-lg dark:text-gray-100  font-semibold tracking-wide mb-4">
+      <h1 className="text-lg dark:text-gray-100  font-semibold mb-4">
         Roles Management
       </h1>
       <ManageMode roles={roles} rules={rules} fetchRoles={fetchRoles} />
