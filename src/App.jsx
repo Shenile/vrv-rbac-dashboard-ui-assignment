@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { Sidebar, SidebarItem } from "./components/SideBar"; // Import Sidebar and SidebarItem
 import BottomNavBar from "./components/BottomNavBar";
-import { Home, Users, Key, Shield, FileText, Settings } from "lucide-react";
+import { Home, Users, Key, Shield, FileText, Settings, LayoutDashboard } from "lucide-react";
 import { useRBAC, RBACProvider } from "./context/RBACcontext"; // Import RBACContext
 import LandingPage from "./pages/LandingPage";
 import { DashboardPage } from "./pages/DashboardPage";
@@ -18,7 +18,9 @@ import DemoPage from "./components/DemoPage";
 
 function App() {
   const [activeItem, setActiveItem] = useState("");
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+  );
   const { currentUserRules, isloading } = useRBAC();
 
   const isSmallScreen = useMediaQuery({ maxWidth: 768 });
@@ -38,7 +40,7 @@ function App() {
     {
       id: "dashboard",
       text: "Dashboard",
-      icon: Home,
+      icon: LayoutDashboard,
       route: "/dashboard",
       ruleContext: "dashboard",
     },

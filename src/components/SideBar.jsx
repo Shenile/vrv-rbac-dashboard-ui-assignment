@@ -21,7 +21,7 @@ export function Sidebar({ children, toggletheme, theme, className }) {
     <aside className="h-full">
       <nav
         className={`h-full flex flex-col bg-white border border-gray-500 border-opacity-50 rounded-lg
-                   dark:bg-surface-a10 dark:border-0 dark:rounded-lg shadow-sm ${className}`}
+                    dark:bg-surface-a10 dark:border-0 dark:rounded-lg shadow-sm ${className}`}
       >
         {/* Sidebar Header */}
         <div className="p-4 pb-2 flex items-center ">

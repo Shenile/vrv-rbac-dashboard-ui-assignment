@@ -19,15 +19,15 @@ export const RBACProvider = ({ children }) => {
 
   const fetchUserDetails = async (role = 1) => {
     try {
-      setLoading(true);
+      
       const res = await login(role); // Fetch user data based on role
-      setLoading(false);
+   
       setCurrentUser(res.user);
       setCurrentUserRole(res.role.role_name);
       setCurrentUserRules(res.role.permissions);
 
     } catch (err) {
-      setLoading(false);
+   
       alert("Error fetching user details: " + err);
     }
   };
