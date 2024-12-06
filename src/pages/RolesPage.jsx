@@ -279,6 +279,7 @@ function ManageMode({ roles, rules, fetchRoles }) {
             setCreateMode={setCreateMode}
             rules={rules}
             fetchRoles={fetchRoles}
+            onCancel={()=> (setCreateMode(false))}
           />
         </div>
       )}
@@ -301,7 +302,7 @@ function RolesPage() {
       <h1 className="md:fixed md:top-8 text-lg dark:text-gray-100 font-semibold mb-4">
         Roles Management
       </h1>
-      <table className="table-auto w-full">
+      {/* <table className="table-auto w-full">
         <thead>
           <tr>
             {headers.map((header, index) => (
@@ -323,7 +324,7 @@ function RolesPage() {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
 
       <ManageMode roles={roles} rules={rules} fetchRoles={fetchRoles} />
     </div>

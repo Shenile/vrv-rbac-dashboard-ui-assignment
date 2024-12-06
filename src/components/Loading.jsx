@@ -86,6 +86,11 @@ function Loading() {
           ></line>
         </svg>
       </div>
+    
+      <p className="ml-2 dark:bg-gray-300 dark:bg-opacity-10 rounded-full backdrop-blur-lg border 
+      border-gray-700 dark:border-highlight rounded-full p-2 dark:text-gray-100">Please wait we are fetching data from server..</p>
+   
+      
     </div>
   );
 }

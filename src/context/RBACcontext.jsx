@@ -15,13 +15,13 @@ export const RBACProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
   const [rules, setRules] = useState([]);
   const [events, setEvents] = useState([]);
-  const [isloading, setLoading] = useState();
+  const [isloading, setLoading] = useState(false);
 
   const fetchUserDetails = async (role = 1) => {
     try {
-      
-      const res = await login(role); // Fetch user data based on role
       setLoading(true);
+      const res = await login(role); // Fetch user data based on role
+      
       setCurrentUser(res.user);
       setCurrentUserRole(res.role.role_name);
       setCurrentUserRules(res.role.permissions);
