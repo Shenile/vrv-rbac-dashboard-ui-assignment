@@ -18,7 +18,7 @@ function RoleForm({
     initialData.permissions || []
   );
   const [loading, setLoading] = useState(false);
-  const {fetchRoles, fetchUserDetails, currentUser} = useRBAC();
+  const { fetchRoles, fetchUserDetails, currentUser } = useRBAC();
 
   const groupedPermissions = rules.reduce((acc, rule) => {
     acc[rule.context] = acc[rule.context] || [];
@@ -52,15 +52,14 @@ function RoleForm({
 
       if (mode === "edit") {
         await updateRole(initialData.id, payload);
-        if (initialData.id === currentUser.id){
+        if (initialData.id === currentUser.id) {
           fetchUserDetails(initialData.id);
         }
-        
+
         onCancel();
       }
 
       fetchRoles();
-
     } catch (err) {
       alert(`An error occurred: ${err.message}`);
     }
@@ -172,7 +171,9 @@ function RoleForm({
 
             xs:text-sm md:text-md 
             px-2 py-1 md:text-md md:px-3 md:py-2 rounded-md font-semibold"
-          >Cancel</button>
+          >
+            Cancel
+          </button>
           <CustomButton
             type="submit"
             label={
@@ -207,6 +208,7 @@ function ManageMode({ roles, rules, fetchRoles }) {
       alert(`Error deleting role: ${error.message}`);
     }
   };
+
   return (
     <div className="rounded-lg mb-2">
       {!createMode && !selectedRole && (
@@ -284,9 +286,13 @@ function ManageMode({ roles, rules, fetchRoles }) {
   );
 }
 
+const headers = ["Role Name", "Description"];
 function RolesPage() {
   const { rules, fetchRoles, roles } = useRBAC(); // Fetching the rules/permissions
+  const [editRow, setEditRow] = useState(false);
 
+
+  console.log(roles);
   return (
     <div
       className="
@@ -295,6 +301,30 @@ function RolesPage() {
       <h1 className="md:fixed md:top-8 text-lg dark:text-gray-100 font-semibold mb-4">
         Roles Management
       </h1>
+      <table className="table-auto w-full">
+        <thead>
+          <tr>
+            {headers.map((header, index) => (
+              <th key={index} className="text-left">{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {roles.map((role, index) => (
+            <tr key={index}>
+              <td>{role.role_name || "None"}</td>
+              <td className="">{role.description}</td>
+              <td>
+                <div className="flex gap-4 justify-start items-center">
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       <ManageMode roles={roles} rules={rules} fetchRoles={fetchRoles} />
     </div>
   );

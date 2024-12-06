@@ -21,13 +21,13 @@ export const RBACProvider = ({ children }) => {
     try {
       
       const res = await login(role); // Fetch user data based on role
-   
+      setLoading(true);
       setCurrentUser(res.user);
       setCurrentUserRole(res.role.role_name);
       setCurrentUserRules(res.role.permissions);
-
+      setLoading(false);
     } catch (err) {
-   
+      setLoading(false);
       alert("Error fetching user details: " + err);
     }
   };
@@ -74,6 +74,10 @@ export const RBACProvider = ({ children }) => {
       alert("ERROR", err);
     }
   };
+
+  // const hasRule = async (rule, userRules){
+    
+  // }
 
 
   useEffect(() => {
